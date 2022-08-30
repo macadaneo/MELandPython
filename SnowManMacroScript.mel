@@ -1,0 +1,51 @@
+// this is my first macro script
+/* this is my
+first 
+multi-line
+MEL
+Code */
+
+//Create base sphere
+polySphere -radius 3 -subdivisionsX 20 -subdivisionsY 20 -axis 0 1 0 -createUVs 2 -constructionHistory 1;
+move -relative -objectSpace -worldSpaceDistance 0 0 3;
+
+//Create mid sphere
+polySphere -radius 2 -subdivisionsX 20 -subdivisionsY 20 -axis 0 1 0 -createUVs 2 -constructionHistory 1;
+move -relative -objectSpace -worldSpaceDistance 0 0 6;
+
+//Create Head sphere
+polySphere -radius 1.75 -subdivisionsX 20 -subdivisionsY 20 -axis 0 1 0 -createUVs 2 -constructionHistory 1;
+move -relative -objectSpace -worldSpaceDistance 0 0 8.5;
+
+//Create carrot nose
+polyCone -radius .33 -height 2 -subdivisionsX 20 -subdivisionsY 1 -subdivisionsZ 0 -axis 0 1 0 -roundCap 0 -createUVs 3 -constructionHistory 1;
+move -relative -objectSpace -worldSpaceDistance 0 2.5 8.5;
+
+//Create left eye
+polySphere -radius .25 -subdivisionsX 20 -subdivisionsY 20 -axis 0 1 0 -createUVs 2 -constructionHistory 1;
+scale -worldSpace -relative 1 0.33 1 ;
+move -relative -objectSpace -worldSpaceDistance -.7 1.5 9;
+rotate -relative -worldSpace -forceOrderXYZ 14 -5 20.5;
+
+//deform left eye
+select -replace pSphere4.vtx[272];
+move -relative 0.03 0 -0.06;
+select -replace pSphere4.vtx[264];
+move -relative 0 0 0.05;
+select -replace pSphere4.vtx[257];
+move -relative  0.02 0 -0.02;
+//ask clayton what code triggers soft select?
+//Soft select needs to be turned on in maya interface for above code to work
+
+
+//create right eye
+select -r pSphere4;
+polyMirrorFace -cutMesh 1 -axis 0 -axisDirection 0 -mergeMode 1 -mergeThresholdType 0 -mergeThreshold 0.001 -mirrorAxis 2 -mirrorPosition 0 -smoothingAngle 30 -flipUVs 0 -ch 1 pSphere4;
+
+//Create Hat
+polyCylinder -radius 2.25 -height 0.1 -subdivisionsX 20 -subdivisionsY 1 -subdivisionsZ 1 -axis 0 0 1 -roundCap 0 -createUVs 3 -constructionHistory 1;
+move -relative -objectSpace -worldSpaceDistance 0 0 9.75;
+rotate -relative -worldSpace -forceOrderXYZ 12 0 0;
+select -add pCylinder1.f[40:59];
+polyExtrudeFacet -constructionHistory 1 -keepFacesTogether 1 -pvx -2.384185791e-07 -pvy -0.009198437663 -pvz 9.798819326 -divisions 1 -twist 0 -taper 1 -offset .8 -thickness 0 -smoothingAngle 30 pCylinder1.f[40:59];
+polyExtrudeFacet -constructionHistory 1 -keepFacesTogether 1 -pvx -1.192092896e-07 -pvy -0.01039541436 -pvz 9.798908586 -divisions 1 -twist 0 -taper 1 -off 0 -thickness 2 -smoothingAngle 30 pCylinder1.f[40:59];
